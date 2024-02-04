@@ -124,8 +124,7 @@ class AppStyles {
   static const TextStyle myCartTitleTextStyle =
       TextStyle(fontWeight: FontWeight.bold, fontSize: 20);
 
-  static const TextStyle filterContentTextStyle =
-      TextStyle(fontWeight: FontWeight.bold, fontSize: 16);
+  static const TextStyle filterContentTextStyle = TextStyle(fontSize: 16);
 
   static ButtonStyle myCartCheckoutButton = ButtonStyle(
       backgroundColor:

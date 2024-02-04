@@ -24,8 +24,9 @@ class _ProductBlock extends State<ProductBlock> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => Get.toNamed(
-          "/productDetail/${widget.name}/${widget.url}/${widget.description}"),
+      // onTap: () => Get.toNamed(
+      //     "/productDetail/${widget.name}/${widget.url}/${widget.description}"),
+      onTap: () {},
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [

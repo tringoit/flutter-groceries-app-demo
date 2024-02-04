@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:groceries_app/modules/auth/screens/account.dart';
+import 'package:groceries_app/modules/home/screens/homeScreen.dart';
+import 'package:groceries_app/modules/product/screens/checkout.dart';
+import 'package:groceries_app/modules/product/screens/favourite.dart';
+import 'package:groceries_app/modules/product/screens/findProduct.dart';
 
 class BottomNavigation extends StatefulWidget {
   @override
@@ -6,15 +11,23 @@ class BottomNavigation extends StatefulWidget {
 }
 
 class _BottomNavigation extends State<BottomNavigation> {
-  int index = 0;
+  int selectedIndex = 0;
+
+  final List<Widget> _listScreens = [
+    HomeScreen(),
+    FindProduct(),
+    Checkout(),
+    Favourite(),
+    Account()
+  ];
 
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-      currentIndex: index,
+      currentIndex: selectedIndex,
       onTap: (int newIndex) {
         setState(() {
-          index = newIndex;
+          selectedIndex = newIndex;
         });
       },
       selectedItemColor: Colors.green,

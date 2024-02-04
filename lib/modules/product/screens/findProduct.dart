@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:groceries_app/common/widgets/searchStore.dart';
 import 'package:groceries_app/core/constants/constants.dart';
 import 'package:groceries_app/core/theme/appStyles.dart';
 import 'package:groceries_app/modules/menu/navigationBar.dart';
@@ -44,25 +46,9 @@ class _FindProduct extends State<FindProduct> {
               style: AppStyles.homeScreenTitleTextStyle,
             )),
         Container(
-          margin: const EdgeInsets.only(top: Space.padding),
-          width: Space.searchBoxWidth,
-          child: TextFormField(
-            decoration: const InputDecoration(
-                hintText: 'Search Store',
-                prefixIcon: Tooltip(
-                  message: 'Search Store',
-                  child: Icon(Icons.search),
-                ),
-                border: OutlineInputBorder(
-                  borderRadius:
-                      BorderRadius.all(Radius.circular(Space.borderCircular)),
-                  borderSide:
-                      BorderSide(color: Color(ListColor.homeScreenSearchColor)),
-                ),
-                fillColor: Color(ListColor.homeScreenSearchColor),
-                filled: true),
-          ),
-        ),
+            margin: const EdgeInsets.only(top: Space.padding),
+            width: Space.searchBoxWidth,
+            child: SearchStore()),
         Expanded(
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
@@ -72,7 +58,6 @@ class _FindProduct extends State<FindProduct> {
                   crossAxisCount: 2,
                   crossAxisSpacing: Space.findProductsGridViewSpacing,
                   mainAxisSpacing: Space.findProductsGridViewSpacing),
-              //padding: EdgeInsets.all(8),
               itemBuilder: (BuildContext context, int index) {
                 return ItemCart(
                   item: listProduct[index],
@@ -93,32 +78,30 @@ class ItemCart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      padding: AppStyles.findProductsPadding,
-      decoration: BoxDecoration(
-          color: Color(int.parse("0xff" + item.backgroundColor)),
-          border:
-              Border.all(color: Color(int.parse("0xff" + item.borderColor))),
-          borderRadius: BorderRadius.circular(Space.borderCircular)),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          InkWell(
-              onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => Beverages()));
-              },
-              child: Image.asset(item.url)),
-          const SizedBox(height: Space.sizeBoxHeightLarge),
-          Text(
-            item.name,
-            style: AppStyles.productTitleTextStyle,
-            textAlign: TextAlign.center,
-          ),
-        ],
+    return InkWell(
+      onTap: () => Get.toNamed('/beverages/'),
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        padding: AppStyles.findProductsPadding,
+        decoration: BoxDecoration(
+            color: Color(int.parse("0xff" + item.backgroundColor)),
+            border:
+                Border.all(color: Color(int.parse("0xff" + item.borderColor))),
+            borderRadius: BorderRadius.circular(Space.borderCircular)),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Image.asset(item.url),
+            const SizedBox(height: Space.sizeBoxHeightLarge),
+            Text(
+              item.name,
+              style: AppStyles.productTitleTextStyle,
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
       ),
     );
   }

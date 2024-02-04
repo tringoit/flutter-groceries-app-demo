@@ -89,6 +89,7 @@ class ListColor {
   static const int closeIconColor = 0xff181725;
   static const int favouriteAlertDialogDescriptionTextColor = 0xff7C7C7C;
   static const int starReviewColor = 0xffF3603F;
+  static const int searchStoreIconColor = 0xff181B19;
 }
 
 class Time {

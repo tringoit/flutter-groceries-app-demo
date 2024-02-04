@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:groceries_app/common/widgets/productBlock.dart';
 import 'package:groceries_app/core/constants/constants.dart';
 import 'package:groceries_app/core/constants/path.dart';
@@ -37,16 +38,16 @@ class _Beverages extends State<Beverages> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Row(children: [
-          IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: const Icon(
-              Icons.arrow_back_ios,
-              color: AppStyles.arrowBackIcon,
-            ),
+        leading: IconButton(
+          onPressed: () {
+            Get.back();
+          },
+          icon: const Icon(
+            Icons.arrow_back_ios,
+            color: AppStyles.arrowBackIcon,
           ),
+        ),
+        title: Row(children: [
           const Expanded(
             child: Align(
               alignment: Alignment.center,
@@ -57,7 +58,7 @@ class _Beverages extends State<Beverages> {
             ),
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: () => Get.toNamed('/searchBeverages/'),
             icon: Icon(Icons.tune),
             color: AppStyles.arrowBackIcon,
           )

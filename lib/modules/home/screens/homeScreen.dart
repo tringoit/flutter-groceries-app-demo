@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:groceries_app/common/widgets/productBlock.dart';
+import 'package:groceries_app/common/widgets/searchStore.dart';
 import 'package:groceries_app/core/theme/appStyles.dart';
 import '../../product/screens/product.dart';
 import '../../../core/constants/constants.dart';
@@ -60,157 +61,133 @@ class _HomeScreen extends State<HomeScreen> {
   Widget build(BuildContext context) {
     double seeAllFontSize = Space.homeScreenSeeAllFontSize;
     return Scaffold(
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.all(Space.padding),
-            child: Column(
-              children: [
-                Container(
-                    margin: const EdgeInsets.only(
-                      left: Space.padding,
-                      top: Space.sizeBoxHeightMedium,
-                    ),
-                    child: Image.asset('${Path.imagePath}carot-leaf.png')),
-                Image.asset('${Path.imagePath}carot-color.png'),
-                const SizedBox(height: Space.padding),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment
-                        .center, //Center Column contents vertically,
-                    crossAxisAlignment: CrossAxisAlignment
-                        .center, //Center Column contents horizontally
-                    children: [
-                      Icon(Icons.location_pin),
-                      Container(
-                          //margin: const EdgeInsets.only(top: Space.padding),
-                          child: const Text(
-                        'Dhaka, Banassre',
-                        style: AppStyles.homeScreenSearchTextStyle,
-                        textAlign: TextAlign.center,
-                      )),
-                    ]),
-                Container(
-                  margin: const EdgeInsets.only(top: Space.padding),
-                  width: Space.searchBoxWidth,
-                  clipBehavior: Clip.hardEdge,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(Space.borderCircular),
-                    border: Border.all(
-                        color: const Color(ListColor.homeScreenSearchColor),
-                        width: Space.homeScreenSearchBorderWidth),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.all(Space.padding),
+          child: Column(
+            children: [
+              Container(
+                  margin: const EdgeInsets.only(
+                    left: Space.padding,
+                    top: Space.sizeBoxHeightMedium,
                   ),
-                  child: const TextField(
-                    decoration: InputDecoration(
-                      prefixIcon: Tooltip(
-                        message: 'Nhập nội dung',
-                        child: Icon(Icons.search),
-                      ),
-                      filled: true,
-                      fillColor: Color(ListColor.homeScreenSearchColor),
-                      labelText: 'Search Store',
-                      border: InputBorder.none,
-                    ),
+                  child: Image.asset('${Path.imagePath}full-carot.png')),
+              const SizedBox(height: Space.padding),
+              Row(
+                  mainAxisAlignment: MainAxisAlignment
+                      .center, //Center Column contents vertically,
+                  crossAxisAlignment: CrossAxisAlignment
+                      .center, //Center Column contents horizontally
+                  children: [
+                    Icon(Icons.location_pin),
+                    Container(
+                        //margin: const EdgeInsets.only(top: Space.padding),
+                        child: const Text(
+                      'Dhaka, Banassre',
+                      style: AppStyles.homeScreenSearchTextStyle,
+                      textAlign: TextAlign.center,
+                    )),
+                  ]),
+              SearchStore(),
+              const SizedBox(height: Space.padding),
+              Container(
+                height: Space.bannerImageHeight,
+                width: Space.bannerImageWidth,
+                child: CarouselSlider(
+                  options: CarouselOptions(
+                    autoPlayInterval:
+                        const Duration(seconds: Time.imageSlideIntervalTime),
+                    autoPlayAnimationDuration: const Duration(
+                        milliseconds: Time.imageSlideAnimationDuration),
+                    autoPlayCurve: Curves.fastOutSlowIn,
+                    enlargeFactor: Space.homeScreenEnlargeFactor,
+                    scrollDirection: Axis.horizontal,
+                    autoPlay: true,
+                    aspectRatio: Space.homeScreenAspectRatio,
+                    enlargeCenterPage: true,
+                    onPageChanged: (index, reason) {
+                      setState(() {
+                        currentIndex = index;
+                      });
+                    },
                   ),
+                  items: images,
                 ),
-                const SizedBox(height: Space.padding),
-                Container(
-                  height: Space.bannerImageHeight,
-                  width: Space.bannerImageWidth,
-                  child: CarouselSlider(
-                    options: CarouselOptions(
-                      autoPlayInterval:
-                          const Duration(seconds: Time.imageSlideIntervalTime),
-                      autoPlayAnimationDuration: const Duration(
-                          milliseconds: Time.imageSlideAnimationDuration),
-                      autoPlayCurve: Curves.fastOutSlowIn,
-                      enlargeFactor: Space.homeScreenEnlargeFactor,
+              ),
+              DotsIndicator(
+                dotsCount: images.length,
+                position: currentIndex.toDouble(),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(Space.padding),
+                child: Row(
+                  children: [
+                    Container(
+                      child: const Text('Exclusive Offer',
+                          style: AppStyles.homeScreenTitleTextStyle),
+                    ),
+                    const Spacer(),
+                    Container(
+                      child: const Text(TextContent.seeMore,
+                          style: AppStyles.homeScreenSeeMoreTextStyle),
+                    )
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: Space.padding),
+                child: Container(
+                  height: 230,
+                  child: ListView.separated(
                       scrollDirection: Axis.horizontal,
-                      autoPlay: true,
-                      aspectRatio: Space.homeScreenAspectRatio,
-                      enlargeCenterPage: true,
-                      onPageChanged: (index, reason) {
-                        setState(() {
-                          currentIndex = index;
-                        });
+                      itemCount: carts.length,
+                      itemBuilder: (context, index) {
+                        return ItemCart(
+                          item: carts[index],
+                        );
                       },
+                      separatorBuilder: (context, index) =>
+                          const SizedBox(width: Space.sizeBoxHeightMedium)),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(Space.padding),
+                child: Row(
+                  children: [
+                    Container(
+                      child: const Text('Best Selling',
+                          style: AppStyles.homeScreenTitleTextStyle),
                     ),
-                    items: images,
-                  ),
+                    const Spacer(),
+                    Container(
+                      child: const Text(TextContent.seeMore,
+                          style: AppStyles.homeScreenSeeMoreTextStyle),
+                    )
+                  ],
                 ),
-                DotsIndicator(
-                  dotsCount: images.length,
-                  position: currentIndex.toDouble(),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: Space.padding),
+                child: Container(
+                  height: Space.homeScreenItemCartHeight,
+                  child: ListView.separated(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: bestSelling.length,
+                      itemBuilder: (context, index) {
+                        return ItemCart(
+                          item: bestSelling[index],
+                        );
+                      },
+                      separatorBuilder: (context, index) =>
+                          const SizedBox(width: Space.sizeBoxHeightMedium)),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(Space.padding),
-                  child: Row(
-                    children: [
-                      Container(
-                        child: const Text('Exclusive Offer',
-                            style: AppStyles.homeScreenTitleTextStyle),
-                      ),
-                      const Spacer(),
-                      Container(
-                        child: const Text(TextContent.seeMore,
-                            style: AppStyles.homeScreenSeeMoreTextStyle),
-                      )
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: Space.padding),
-                  child: Container(
-                    height: 230,
-                    child: ListView.separated(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: carts.length,
-                        itemBuilder: (context, index) {
-                          return ItemCart(
-                            item: carts[index],
-                          );
-                        },
-                        separatorBuilder: (context, index) =>
-                            const SizedBox(width: Space.sizeBoxHeightMedium)),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(Space.padding),
-                  child: Row(
-                    children: [
-                      Container(
-                        child: const Text('Best Selling',
-                            style: AppStyles.homeScreenTitleTextStyle),
-                      ),
-                      const Spacer(),
-                      Container(
-                        child: const Text(TextContent.seeMore,
-                            style: AppStyles.homeScreenSeeMoreTextStyle),
-                      )
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: Space.padding),
-                  child: Container(
-                    height: Space.homeScreenItemCartHeight,
-                    child: ListView.separated(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: bestSelling.length,
-                        itemBuilder: (context, index) {
-                          return ItemCart(
-                            item: bestSelling[index],
-                          );
-                        },
-                        separatorBuilder: (context, index) =>
-                            const SizedBox(width: Space.sizeBoxHeightMedium)),
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
-        bottomNavigationBar: BottomNavigation());
+      ),
+      //bottomNavigationBar: BottomNavigation()
+    );
   }
 }
 

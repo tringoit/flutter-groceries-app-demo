@@ -1,39 +1,60 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:groceries_app/core/constants/constants.dart';
 import 'package:groceries_app/core/theme/appStyles.dart';
 import 'findProduct.dart';
 import 'package:groceries_app/core/constants/path.dart';
+import 'package:expandable_text/expandable_text.dart';
 
 class ProductDetail extends StatefulWidget {
-  // final String name;
-  // final String url;
-  // final String description;
-
-  // const ProductDetail(
-  //     {super.key,
-  //     required this.name,
-  //     required this.url,
-  //     required this.description});
-
   @override
   State<ProductDetail> createState() => _ProductDetail();
 }
 
 int currentIndex = 0;
+
+String productDetailTextDefault =
+    'Apples are nutritious. Apples may be good for weight loss. apples may be good for your heart. As part of a healtful and varied diet.';
+String productDetailText = productDetailTextDefault;
+
 final images = ["${Path.imagePath}apple.png", "${Path.imagePath}apple.png"];
 
 class _ProductDetail extends State<ProductDetail> {
+  final TextEditingController _countController =
+      TextEditingController(text: '1');
+  int productCount = 1;
+
+  void _toggleText() {
+    setState(() {
+      if (productDetailText == '') {
+        productDetailText = productDetailTextDefault;
+      } else {
+        productDetailText = '';
+      }
+    });
+  }
+
+  _calculateProductCount(symbol) {
+    setState(() {
+      if (symbol == '+') {
+        productCount++;
+      } else {
+        productCount--;
+      }
+      _countController.text =
+          productCount.toString(); // Update text field value
+    });
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Row(
           children: [
             IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
+              onPressed: () => Get.back(),
               icon: const Icon(
                 Icons.arrow_back_ios,
                 color: AppStyles.arrowBackIcon,
@@ -106,17 +127,24 @@ class _ProductDetail extends State<ProductDetail> {
             padding: EdgeInsets.symmetric(vertical: Space.padding),
             child: Row(
               children: [
-                Icon(Icons.remove),
+                InkWell(
+                    onTap: () => _calculateProductCount('-'),
+                    child: Icon(Icons.remove)),
                 Container(
                   width: Space.productDetailAddItemInputWidth,
                   child: TextFormField(
-                    initialValue: '1',
-                    textAlign: AppStyles.productDetailAlignment,
-                  ),
+                      //key: Key(productCount.toString()),
+                      //initialValue: productCount.toString(),
+                      controller: _countController,
+                      textAlign: AppStyles.productDetailAlignment,
+                      keyboardType: TextInputType.number),
                 ),
-                const Icon(
-                  Icons.add,
-                  color: Color(ListColor.checkoutButtonColor),
+                InkWell(
+                  onTap: () => _calculateProductCount('+'),
+                  child: const Icon(
+                    Icons.add,
+                    color: Color(ListColor.checkoutButtonColor),
+                  ),
                 ),
                 Spacer(),
                 Text(
@@ -127,16 +155,34 @@ class _ProductDetail extends State<ProductDetail> {
             ),
           ),
           Row(
-            children: [Text('Product Detail'), Icon(Icons.arrow_drop_down)],
+            children: [
+              Text('Product Detail'),
+              Spacer(),
+              InkWell(
+                onTap: _toggleText,
+                child: Image.asset(
+                  '${Path.imagePath}arrow-right.png',
+                  //height: Space.imageHeight,
+                  width: Space.padding,
+                ),
+              )
+            ],
           ),
           Text(
-            'Apples are nutritious. Apples may be good for weight loss. apples may be good for your heart. As part of a healtful and varied diet.',
-            style: TextStyle(fontSize: 13, color: Color(0xff7C7C7C)),
+            productDetailText,
+            style: const TextStyle(
+                fontSize: 13,
+                color: Color(ListColor.checkoutDetailTypeTextColor)),
           ),
           Row(children: [
             Text('Nutritions'),
             Text('100gr'),
-            Icon(Icons.arrow_right)
+            Spacer(),
+            Image.asset(
+              '${Path.imagePath}arrow-right.png',
+              //height: Space.imageHeight,
+              width: Space.padding,
+            ),
           ]),
           Row(children: [
             Text('Review'),
@@ -148,23 +194,28 @@ class _ProductDetail extends State<ProductDetail> {
                     color: Color(ListColor.starReviewColor)),
               ),
             ),
-            Icon(Icons.arrow_right)
+            Image.asset(
+              '${Path.imagePath}arrow-right.png',
+              //height: Space.imageHeight,
+              width: Space.padding,
+            ),
           ]),
           Spacer(),
           Container(
-            width: Space.addProductToCartButtonWidth,
+            width: Space.confirmButtonWidth,
+            height: Space.confirmButtonHeight,
             child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => FindProduct()));
-                },
+                onPressed: () => Get.toNamed('/findProduct/'),
                 style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(Colors.green),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                             borderRadius:
                                 BorderRadius.circular(Space.borderCircular)))),
-                child: const Text('Add To Basket')),
+                child: const Text(
+                  'Add To Basket',
+                  style: AppStyles.myCartCheckoutButtonTextStyle,
+                )),
           )
         ]),
       ),

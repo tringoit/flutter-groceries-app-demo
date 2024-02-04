@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:groceries_app/common/widgets/checkbox.dart';
 import 'package:groceries_app/core/constants/constants.dart';
 import 'package:groceries_app/core/theme/appStyles.dart';
@@ -34,22 +35,23 @@ class _Filters extends State<Filters> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Row(children: [
-          IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: const Icon(
-              Icons.arrow_back_ios,
-              color: AppStyles.arrowBackIcon,
-            ),
+        leading: IconButton(
+          onPressed: () => Get.back(),
+          icon: const Icon(
+            Icons.arrow_back_ios,
+            color: AppStyles.arrowBackIcon,
           ),
-          const Expanded(
+        ),
+        title: Row(children: [
+          Expanded(
             child: Align(
               alignment: Alignment.center,
-              child: Text(
-                'Filters',
-                style: AppStyles.appBarTitleTextStyle,
+              child: InkWell(
+                onTap: () => Get.toNamed('/checkout/'),
+                child: const Text(
+                  'Filters',
+                  style: AppStyles.appBarTitleTextStyle,
+                ),
               ),
             ),
           )

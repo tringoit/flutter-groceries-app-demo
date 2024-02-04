@@ -74,8 +74,40 @@ class MyApp extends StatelessWidget {
           page: () => HomeScreen(),
         ),
         GetPage(
-          name: '/productDetail/:name/:url/:description',
+          name: '/productDetail/',
           page: () => ProductDetail(),
+        ),
+        // GetPage(
+        //   name: '/productDetail/:name/:url/:description',
+        //   page: () => ProductDetail(),
+        // ),
+        GetPage(
+          name: '/findProduct/',
+          page: () => FindProduct(),
+        ),
+        GetPage(
+          name: '/beverages/',
+          page: () => Beverages(),
+        ),
+        GetPage(
+          name: '/searchBeverages/',
+          page: () => SearchBeverages(),
+        ),
+        GetPage(
+          name: '/filters/',
+          page: () => Filters(),
+        ),
+        GetPage(
+          name: '/myCart/',
+          page: () => MyCart(),
+        ),
+        GetPage(
+          name: '/checkout/',
+          page: () => Checkout(),
+        ),
+        GetPage(
+          name: '/orderAccepted/',
+          page: () => OrderAccepted(),
         ),
       ],
 
@@ -99,7 +131,21 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int index = 1;
+  int _selectedIndex = 0;
+
+  final List<Widget> _listScreens = [
+    HomeScreen(),
+    FindProduct(),
+    Checkout(),
+    Favourite(),
+    Account()
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -108,9 +154,37 @@ class _MyHomePageState extends State<MyHomePage> {
       debugShowCheckedModeBanner: false,
       home: SafeArea(
         child: Scaffold(
-          // body:
-          //     IndexedStack(index: index, children: [HomeScreen(), Onbording()]),
-          body: HomeScreen(),
+          body: _listScreens[_selectedIndex],
+          //body: HomeScreen(),
+          bottomNavigationBar: BottomNavigationBar(
+            currentIndex: _selectedIndex,
+            onTap: _onItemTapped,
+            selectedItemColor: Colors.green,
+            unselectedLabelStyle: const TextStyle(color: Colors.black),
+            unselectedItemColor: Colors.black,
+            items: const [
+              BottomNavigationBarItem(
+                icon: Icon(Icons.shop),
+                label: 'Shop',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.search),
+                label: 'Explore',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.shopping_basket),
+                label: 'Cart',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.favorite),
+                label: 'Favorite',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.person),
+                label: 'Account',
+              ),
+            ],
+          ),
         ),
       ),
     );

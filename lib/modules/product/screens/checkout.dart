@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:groceries_app/common/widgets/closeIcon.dart';
 import 'package:groceries_app/common/widgets/confirmButton.dart';
+import 'package:groceries_app/common/widgets/confirmButtonCheckout.dart';
 import 'package:groceries_app/common/widgets/divineLine.dart';
 import 'package:groceries_app/common/widgets/myCartProductBlock.dart';
 import 'package:groceries_app/core/constants/constants.dart';
@@ -194,19 +195,13 @@ void openBottomSheet() {
               ),
               const Padding(
                 padding: EdgeInsets.only(top: Space.sizeBoxHeightLarge),
-                child: ConfirmButton(
+                child: ConfirmButtonCheckout(
                     content: 'Place Order',
                     textColor: ListColor.confirmButtonTextColor,
                     buttonColor: ListColor.checkoutButtonColor),
               )
             ],
           )
-          // OutlinedButton(
-          //   onPressed: () {
-          //     Get.back();
-          //   },
-          //   child: const Text('Close'),
-          // ),
         ],
       ),
     ),

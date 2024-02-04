@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:groceries_app/common/widgets/productBlock.dart';
 import 'package:groceries_app/core/constants/constants.dart';
 import 'package:groceries_app/core/constants/path.dart';
@@ -71,7 +72,7 @@ class _SearchBeverages extends State<SearchBeverages> {
                   child: Align(
                     alignment: Alignment.topRight,
                     child: IconButton(
-                      onPressed: () {},
+                      onPressed: () => Get.toNamed('/filters/'),
                       icon: Icon(Icons.tune),
                       color: AppStyles.arrowBackIcon,
                     ),
