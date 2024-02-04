@@ -38,7 +38,7 @@ class _Filters extends State<Filters> {
         leading: IconButton(
           onPressed: () => Get.back(),
           icon: const Icon(
-            Icons.arrow_back_ios,
+            Icons.close,
             color: AppStyles.arrowBackIcon,
           ),
         ),

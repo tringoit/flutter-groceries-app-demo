@@ -67,7 +67,6 @@ class _FindProduct extends State<FindProduct> {
           ),
         ),
       ]),
-      bottomNavigationBar: BottomNavigation(),
     );
   }
 }

@@ -160,6 +160,7 @@ class _MyHomePageState extends State<MyHomePage> {
             currentIndex: _selectedIndex,
             onTap: _onItemTapped,
             selectedItemColor: Colors.green,
+            showUnselectedLabels: true,
             unselectedLabelStyle: const TextStyle(color: Colors.black),
             unselectedItemColor: Colors.black,
             items: const [
