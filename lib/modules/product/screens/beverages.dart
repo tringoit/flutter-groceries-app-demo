@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:groceries_app/common/models/listProducts.dart';
 import 'package:groceries_app/common/widgets/productBlock.dart';
+import 'package:groceries_app/controller/myCartController.dart';
 import 'package:groceries_app/core/constants/constants.dart';
 import 'package:groceries_app/core/constants/path.dart';
 import 'package:groceries_app/common/widgets/plusButton.dart';
@@ -11,29 +13,9 @@ class Beverages extends StatefulWidget {
   State<Beverages> createState() => _Beverages();
 }
 
-class Product {
-  const Product(this.name, this.description, this.url, this.price);
-
-  final String name;
-  final String description;
-  final String url;
-  final String price;
-}
-
-List<Product> listProduct = [
-  Product('Diet Coke', '355ml, Price', '${Path.imagePath}coke.png', '1.99'),
-  Product('Sprite Can', '325ml, Price', '${Path.imagePath}sprite.png', '1.50'),
-  Product('Apple & Grape Juice', '2L, Price',
-      '${Path.imagePath}apple-juice.png', '15.99'),
-  Product('Orenge Juice', '2L, Price', '${Path.imagePath}bakery-snacks.png',
-      '15.99'),
-  Product('Coca Cola Can', '325ml, Price', '${Path.imagePath}dairy-eggs.png',
-      '4.99'),
-  Product(
-      'Pepsi Can ', '330ml, Price', '${Path.imagePath}beverage.png', '4.99'),
-];
-
 class _Beverages extends State<Beverages> {
+  final c = Get.find<MyCartController>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,22 +54,28 @@ class _Beverages extends State<Beverages> {
           children: [
             Expanded(
               child: Container(
-                height: Space.homeScreenItemCartHeight,
-                padding: const EdgeInsets.symmetric(vertical: Space.padding),
-                child: GridView.builder(
-                  itemCount: listProduct.length,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: Space.findProductsGridViewSpacing,
-                      mainAxisSpacing: Space.findProductsGridViewSpacing,
-                      mainAxisExtent: Space.homeScreenItemCartHeight),
-                  itemBuilder: (BuildContext context, int index) {
-                    return ItemCart(
-                      item: listProduct[index],
+                  height: Space.homeScreenItemCartHeight,
+                  padding: const EdgeInsets.symmetric(vertical: Space.padding),
+                  child: Obx(() {
+                    return GridView.builder(
+                      itemCount: c.beveragesList.value.length,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              crossAxisSpacing:
+                                  Space.findProductsGridViewSpacing,
+                              mainAxisSpacing:
+                                  Space.findProductsGridViewSpacing,
+                              mainAxisExtent: Space.homeScreenItemCartHeight),
+                      itemBuilder: (BuildContext context, int index) {
+                        return ItemCart(
+                          item: listBeverages[index],
+                          onPressed: () =>
+                              c.cartList.value.add(listBeverages[index]),
+                        );
+                      },
                     );
-                  },
-                ),
-              ),
+                  })),
             ),
           ],
         ),
@@ -98,7 +86,8 @@ class _Beverages extends State<Beverages> {
 
 class ItemCart extends StatelessWidget {
   final Product item;
-  const ItemCart({super.key, required this.item});
+  final Function()? onPressed;
+  const ItemCart({super.key, required this.item, this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -115,6 +104,10 @@ class ItemCart extends StatelessWidget {
             url: item.url,
             name: item.name,
             description: item.description,
-            price: '${item.price}'));
+            price: '${item.price}',
+            onPressed: () {
+              //xu ly list
+              onPressed?.call();
+            }));
   }
 }

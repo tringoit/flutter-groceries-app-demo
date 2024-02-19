@@ -15,7 +15,8 @@ class _SplashScreen extends State<SplashScreen> {
     return Scaffold(
       backgroundColor: Color(0xff49B279),
       body: InkWell(
-          onTap: () => Get.toNamed('/onbording/'),
+          //onTap: () => Get.toNamed('/onbording/'),
+          onTap: () => Get.to(Onbording()),
           child:
               Center(child: Image.asset('${Path.imagePath}splashScreen.png'))),
     );

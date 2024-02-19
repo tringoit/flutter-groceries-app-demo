@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:groceries_app/common/models/listProducts.dart';
 import 'package:groceries_app/common/widgets/productBlock.dart';
 import 'package:groceries_app/common/widgets/searchStore.dart';
-import 'package:groceries_app/controller/myCartController.dart';
 import 'package:groceries_app/core/theme/appStyles.dart';
 import '../../product/screens/product.dart';
 import '../../../core/constants/constants.dart';
@@ -18,6 +15,41 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreen();
 }
 
+class Card {
+  const Card(this.name, this.description, this.url, this.price);
+
+  final String name;
+  final String description;
+  final String url;
+  final String price;
+}
+
+List<Card> carts = [
+  Card(
+      'Organic Bananas', '7pcs, Priceg', '${Path.imagePath}banana.png', '4.99'),
+  Card('Red Apple', '1kg, Priceg', '${Path.imagePath}apple.png', '4.99'),
+  Card('Bell Pepper', '5pcs, Priceg', '${Path.imagePath}bell-pepper.png',
+      '3.99'),
+  Card('Onion', '2kg, Priceg', '${Path.imagePath}onion.png', '1.99')
+];
+
+List<Card> bestSelling = [
+  Card('Bell Pepper', '5pcs, Priceg', '${Path.imagePath}bell-pepper.png',
+      '3.99'),
+  Card('Onion', '2kg, Priceg', '${Path.imagePath}onion.png', '1.99')
+];
+
+List<Card> groceriesCategory = [
+  Card('Pulses', '', '${Path.imagePath}pulses.png', ''),
+  Card('Broiler Chicken', '', '${Path.imagePath}broiler-chicken.png', '')
+];
+
+List<Card> groceries = [
+  Card('Beef Bone', '1kg, Priceg', '${Path.imagePath}beef-bone.png', '4.99'),
+  Card('Broiler Chicken', '1kg, Priceg', '${Path.imagePath}broiler-chicken.png',
+      '4.99')
+];
+
 int currentIndex = 0;
 final images = [
   Image.asset("${Path.imagePath}banner.png"),
@@ -25,8 +57,6 @@ final images = [
 ];
 
 class _HomeScreen extends State<HomeScreen> {
-  final MyCartController c = Get.put(MyCartController());
-
   @override
   Widget build(BuildContext context) {
     double seeAllFontSize = Space.homeScreenSeeAllFontSize;
@@ -108,22 +138,16 @@ class _HomeScreen extends State<HomeScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: Space.padding),
                 child: Container(
                   height: 230,
-                  child: Obx(
-                    () {
-                      return ListView.separated(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: c.productList.value.length,
-                          itemBuilder: (context, index) {
-                            return ItemCart(
-                              item: listProduct[index],
-                              onPressed: () =>
-                                  c.cartList.value.add(listProduct[index]),
-                            );
-                          },
-                          separatorBuilder: (context, index) =>
-                              const SizedBox(width: Space.sizeBoxHeightMedium));
-                    },
-                  ),
+                  child: ListView.separated(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: carts.length,
+                      itemBuilder: (context, index) {
+                        return ItemCart(
+                          item: carts[index],
+                        );
+                      },
+                      separatorBuilder: (context, index) =>
+                          const SizedBox(width: Space.sizeBoxHeightMedium)),
                 ),
               ),
               Padding(
@@ -145,80 +169,18 @@ class _HomeScreen extends State<HomeScreen> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: Space.padding),
                 child: Container(
-                    height: Space.homeScreenItemCartHeight,
-                    child: Obx(
-                      () {
-                        return ListView.separated(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: c.bestSellingList.value.length,
-                            itemBuilder: (context, index) {
-                              return ItemCart(
-                                item: bestSelling[index],
-                                onPressed: () =>
-                                    c.cartList.value.add(bestSelling[index]),
-                              );
-                            },
-                            separatorBuilder: (context, index) =>
-                                const SizedBox(
-                                    width: Space.sizeBoxHeightMedium));
+                  height: Space.homeScreenItemCartHeight,
+                  child: ListView.separated(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: bestSelling.length,
+                      itemBuilder: (context, index) {
+                        return ItemCart(
+                          item: bestSelling[index],
+                        );
                       },
-                    )),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(Space.padding),
-                child: Row(
-                  children: [
-                    Container(
-                      child: const Text('Groceries',
-                          style: AppStyles.homeScreenTitleTextStyle),
-                    ),
-                    const Spacer(),
-                    Container(
-                      child: const Text(TextContent.seeMore,
-                          style: AppStyles.homeScreenSeeMoreTextStyle),
-                    )
-                  ],
+                      separatorBuilder: (context, index) =>
+                          const SizedBox(width: Space.sizeBoxHeightMedium)),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: Space.padding),
-                child: Container(
-                    height: Space.groceriesCategoryHeight,
-                    child: ListView.separated(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: 2,
-                        itemBuilder: (context, index) {
-                          return Container(
-                              margin: const EdgeInsets.only(
-                                left: Space.padding,
-                                top: Space.sizeBoxHeightMedium,
-                              ),
-                              child: Image.asset(groceriesCategory[index].url));
-                        },
-                        separatorBuilder: (context, index) =>
-                            const SizedBox(width: Space.sizeBoxHeightMedium))),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: Space.padding),
-                child: Container(
-                    height: Space.homeScreenItemCartHeight,
-                    child: Obx(
-                      () {
-                        return ListView.separated(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: c.groceriesList.value.length,
-                            itemBuilder: (context, index) {
-                              return ItemCart(
-                                item: listGroceries[index],
-                                onPressed: () =>
-                                    c.cartList.value.add(listGroceries[index]),
-                              );
-                            },
-                            separatorBuilder: (context, index) =>
-                                const SizedBox(
-                                    width: Space.sizeBoxHeightMedium));
-                      },
-                    )),
               ),
             ],
           ),
@@ -230,31 +192,23 @@ class _HomeScreen extends State<HomeScreen> {
 }
 
 class ItemCart extends StatelessWidget {
-  final Product item;
-  final Function()? onPressed;
-
-  const ItemCart({super.key, required this.item, this.onPressed});
+  final Card item;
+  const ItemCart({super.key, required this.item});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: Space.itemHeight,
-      width: Space.itemWidth,
-      padding: AppStyles.homeScreenItemCartPadding,
-      decoration: BoxDecoration(
-          border:
-              Border.all(color: const Color(ListColor.homeScreenSearchColor)),
-          borderRadius: BorderRadius.circular(Space.borderCircular)),
-      child: ProductBlock(
-        url: item.url,
-        name: item.name,
-        description: item.description,
-        price: item.price,
-        onPressed: () {
-          //xu ly list
-          onPressed?.call();
-        },
-      ),
-    );
+        height: Space.itemHeight,
+        width: Space.itemWidth,
+        padding: AppStyles.homeScreenItemCartPadding,
+        decoration: BoxDecoration(
+            border:
+                Border.all(color: const Color(ListColor.homeScreenSearchColor)),
+            borderRadius: BorderRadius.circular(Space.borderCircular)),
+        child: ProductBlock(
+            url: item.url,
+            name: item.name,
+            description: item.description,
+            price: item.price));
   }
 }

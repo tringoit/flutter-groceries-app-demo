@@ -4,7 +4,6 @@ import 'package:groceries_app/modules/auth/screens/account.dart';
 import 'package:groceries_app/modules/auth/screens/enterPhone.dart';
 import 'package:groceries_app/modules/product/screens/checkout.dart';
 import 'package:groceries_app/modules/product/screens/favourite.dart';
-import 'package:groceries_app/modules/product/screens/myCart.dart';
 import 'package:groceries_app/modules/home/screens/homeScreen.dart';
 import 'package:groceries_app/modules/product/screens/filters.dart';
 import 'package:groceries_app/modules/product/screens/order-accepted.dart';
@@ -23,6 +22,7 @@ import 'modules/product/screens/findProduct.dart';
 import 'modules/product/screens/beverages.dart';
 import 'modules/menu/navigationBar.dart';
 import 'package:get/get.dart';
+import 'package:groceries_app/core/constants/path.dart';
 
 void main() {
   runApp(const MyApp());
@@ -73,10 +73,10 @@ class MyApp extends StatelessWidget {
           name: '/homeScreen/',
           page: () => HomeScreen(),
         ),
-        GetPage(
-          name: '/productDetail/',
-          page: () => ProductDetail(),
-        ),
+        // GetPage(
+        //   name: '/productDetail/',
+        //   page: () => ProductDetail(),
+        // ),
         // GetPage(
         //   name: '/productDetail/:name/:url/:description',
         //   page: () => ProductDetail(),
@@ -97,10 +97,10 @@ class MyApp extends StatelessWidget {
           name: '/filters/',
           page: () => Filters(),
         ),
-        GetPage(
-          name: '/myCart/',
-          page: () => MyCart(),
-        ),
+        // GetPage(
+        //   name: '/myCart/',
+        //   page: () => MyCart(),
+        // ),
         GetPage(
           name: '/checkout/',
           page: () => Checkout(),
@@ -154,8 +154,8 @@ class _MyHomePageState extends State<MyHomePage> {
       debugShowCheckedModeBanner: false,
       home: SafeArea(
         child: Scaffold(
-          body: _listScreens[_selectedIndex],
           //body: HomeScreen(),
+          body: _listScreens[_selectedIndex],
           bottomNavigationBar: BottomNavigationBar(
             currentIndex: _selectedIndex,
             onTap: _onItemTapped,
@@ -163,25 +163,35 @@ class _MyHomePageState extends State<MyHomePage> {
             showUnselectedLabels: true,
             unselectedLabelStyle: const TextStyle(color: Colors.black),
             unselectedItemColor: Colors.black,
-            items: const [
+            items: [
               BottomNavigationBarItem(
-                icon: Icon(Icons.shop),
+                icon: ImageIcon(
+                  AssetImage("${Path.imagePath}shop.png"),
+                ),
                 label: 'Shop',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.search),
+                icon: ImageIcon(
+                  AssetImage("${Path.imagePath}explore.png"),
+                ),
                 label: 'Explore',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.shopping_basket),
+                icon: ImageIcon(
+                  AssetImage("${Path.imagePath}cart.png"),
+                ),
                 label: 'Cart',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.favorite),
-                label: 'Favorite',
+                icon: ImageIcon(
+                  AssetImage("${Path.imagePath}favorite.png"),
+                ),
+                label: 'Favourite',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.person),
+                icon: ImageIcon(
+                  AssetImage("${Path.imagePath}account.png"),
+                ),
                 label: 'Account',
               ),
             ],

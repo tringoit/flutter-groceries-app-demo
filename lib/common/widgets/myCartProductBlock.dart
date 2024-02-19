@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:groceries_app/common/widgets/minusButtonMyCart.dart';
 import 'package:groceries_app/common/widgets/plusButtonMyCart.dart';
+import 'package:groceries_app/controller/myCartController.dart';
 import 'package:groceries_app/core/constants/constants.dart';
 import 'package:groceries_app/core/theme/appStyles.dart';
+import 'package:groceries_app/common/models/listProducts.dart';
 
 class MyCartProductBlock extends StatefulWidget {
+  final int index;
   final String url;
   final String name;
   final String description;
@@ -12,6 +16,7 @@ class MyCartProductBlock extends StatefulWidget {
 
   const MyCartProductBlock(
       {super.key,
+      required this.index,
       required this.url,
       required this.name,
       required this.description,
@@ -22,6 +27,7 @@ class MyCartProductBlock extends StatefulWidget {
 }
 
 class _MyCartProductBlock extends State<MyCartProductBlock> {
+  final MyCartController c = Get.put(MyCartController());
   @override
   Widget build(BuildContext context) {
     return Column(children: [
@@ -46,9 +52,14 @@ class _MyCartProductBlock extends State<MyCartProductBlock> {
                           fontWeight: FontWeight.bold, fontSize: 16),
                     ),
                   ),
-                  const Icon(
-                    Icons.close,
-                    color: Color(ListColor.closeSymbolButtonColor),
+                  InkWell(
+                    child: const Icon(
+                      Icons.close,
+                      color: Color(ListColor.closeSymbolButtonColor),
+                    ),
+                    // onTap: () => c.cartList.value.remove(Product(widget.name,
+                    //     widget.description, widget.url, widget.price)),
+                    onTap: () => c.cartList.value.removeAt(widget.index),
                   ),
                 ],
               ),

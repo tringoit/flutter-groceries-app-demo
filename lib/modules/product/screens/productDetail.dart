@@ -2,13 +2,27 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:groceries_app/controller/myCartController.dart';
 import 'package:groceries_app/core/constants/constants.dart';
 import 'package:groceries_app/core/theme/appStyles.dart';
-import 'findProduct.dart';
+//import 'findProduct.dart';
 import 'package:groceries_app/core/constants/path.dart';
 import 'package:expandable_text/expandable_text.dart';
+import 'package:groceries_app/common/models/listProducts.dart';
 
 class ProductDetail extends StatefulWidget {
+  final String url;
+  final String name;
+  final String description;
+  final String price;
+
+  const ProductDetail(
+      {super.key,
+      required this.url,
+      required this.name,
+      required this.description,
+      required this.price});
+
   @override
   State<ProductDetail> createState() => _ProductDetail();
 }
@@ -19,11 +33,10 @@ String productDetailTextDefault =
     'Apples are nutritious. Apples may be good for weight loss. apples may be good for your heart. As part of a healtful and varied diet.';
 String productDetailText = productDetailTextDefault;
 
-final images = ["${Path.imagePath}apple.png", "${Path.imagePath}apple.png"];
-
 class _ProductDetail extends State<ProductDetail> {
   final TextEditingController _countController =
       TextEditingController(text: '1');
+  final c = Get.find<MyCartController>();
   int productCount = 1;
 
   void _toggleText() {
@@ -49,18 +62,20 @@ class _ProductDetail extends State<ProductDetail> {
   }
 
   Widget build(BuildContext context) {
+    final images = [(widget.url), (widget.url)];
+
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          onPressed: () => Get.back(),
+          icon: const Icon(
+            Icons.arrow_back_ios,
+            color: AppStyles.arrowBackIcon,
+          ),
+        ),
         title: Row(
           children: [
-            IconButton(
-              onPressed: () => Get.back(),
-              icon: const Icon(
-                Icons.arrow_back_ios,
-                color: AppStyles.arrowBackIcon,
-              ),
-            ),
-            const Spacer(),
+            Spacer(),
             IconButton(
               onPressed: () {},
               icon: const Icon(Icons.file_upload_outlined),
@@ -110,16 +125,18 @@ class _ProductDetail extends State<ProductDetail> {
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: const [
-              Text('Naturel Red Apple',
-                  style: AppStyles.productDetailTextStyle),
-              Icon(Icons.favorite_outline)
+            children: [
+              Text(widget.name, style: AppStyles.productDetailTextStyle),
+              InkWell(
+                onTap: _toggleText,
+                child: Icon(Icons.favorite_border),
+              )
             ],
           ),
           Container(
             alignment: Alignment.centerLeft,
-            child: const Text(
-              '1kg, Price',
+            child: Text(
+              widget.description,
               style: AppStyles.productDetailDescriptionTextStyle,
             ),
           ),
@@ -133,8 +150,6 @@ class _ProductDetail extends State<ProductDetail> {
                 Container(
                   width: Space.productDetailAddItemInputWidth,
                   child: TextFormField(
-                      //key: Key(productCount.toString()),
-                      //initialValue: productCount.toString(),
                       controller: _countController,
                       textAlign: AppStyles.productDetailAlignment,
                       keyboardType: TextInputType.number),
@@ -148,7 +163,7 @@ class _ProductDetail extends State<ProductDetail> {
                 ),
                 Spacer(),
                 Text(
-                  '\$4.99',
+                  '\$${widget.price}',
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 )
               ],
@@ -201,22 +216,25 @@ class _ProductDetail extends State<ProductDetail> {
             ),
           ]),
           Spacer(),
-          Container(
-            width: Space.confirmButtonWidth,
-            height: Space.confirmButtonHeight,
-            child: ElevatedButton(
-                onPressed: () => Get.toNamed('/findProduct/'),
-                style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.green),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.circular(Space.borderCircular)))),
-                child: const Text(
-                  'Add To Basket',
-                  style: AppStyles.myCartCheckoutButtonTextStyle,
-                )),
-          )
+          Obx(() {
+            return Container(
+              width: Space.confirmButtonWidth,
+              height: Space.confirmButtonHeight,
+              child: ElevatedButton(
+                  onPressed: () => c.cartList.value.add(Product(widget.name,
+                      widget.description, widget.url, widget.price)),
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.green),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(
+                                  Space.borderCircular)))),
+                  child: Text(
+                    'Add To Basket ${c.cartList.value.length}',
+                    style: AppStyles.myCartCheckoutButtonTextStyle,
+                  )),
+            );
+          })
         ]),
       ),
     );

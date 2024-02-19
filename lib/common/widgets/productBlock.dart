@@ -2,19 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:groceries_app/common/widgets/plusButton.dart';
 import 'package:groceries_app/core/constants/constants.dart';
+import 'package:groceries_app/modules/product/screens/productDetail.dart';
 
 class ProductBlock extends StatefulWidget {
   final String url;
   final String name;
   final String description;
   final String price;
+  final Function()? onPressed;
 
-  const ProductBlock(
-      {super.key,
-      required this.url,
-      required this.name,
-      required this.description,
-      required this.price});
+  const ProductBlock({
+    super.key,
+    required this.url,
+    required this.name,
+    required this.description,
+    required this.price,
+    this.onPressed,
+  });
 
   @override
   State<ProductBlock> createState() => _ProductBlock();
@@ -26,7 +30,11 @@ class _ProductBlock extends State<ProductBlock> {
     return InkWell(
       // onTap: () => Get.toNamed(
       //     "/productDetail/${widget.name}/${widget.url}/${widget.description}"),
-      onTap: () {},
+      onTap: () => Get.to(() => ProductDetail(
+          url: widget.url,
+          name: widget.name,
+          description: widget.description,
+          price: widget.price)),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -57,8 +65,24 @@ class _ProductBlock extends State<ProductBlock> {
                 child: Text('\$ ${widget.price}',
                     style: const TextStyle(
                         fontWeight: FontWeight.bold, fontSize: 18))),
-            Spacer(),
-            PlusButton()
+            const Spacer(),
+            Container(
+                height: Space.plusButtonSize,
+                width: Space.plusButtonSize,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                    color: Colors.green,
+                    borderRadius: BorderRadius.circular(Space.borderCircular),
+                    border: Border.all(width: 2, color: Colors.green)),
+                child: InkWell(
+                  onTap: () {
+                    widget.onPressed?.call();
+                  },
+                  child: const Icon(
+                    Icons.add,
+                    color: Colors.white,
+                  ),
+                ))
           ])
         ],
       ),

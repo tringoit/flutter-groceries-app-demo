@@ -56,6 +56,7 @@ class Space {
   static const double groceriesBasketWidth = 222.35;
   static const double groceriesBasketHeight = 221.85;
   static const double checkoutPadding = 14;
+  static const double groceriesCategoryHeight = 105;
 }
 
 class TextContent {

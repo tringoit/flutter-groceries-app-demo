@@ -9,6 +9,8 @@ import 'package:groceries_app/core/theme/appStyles.dart';
 import 'package:groceries_app/core/constants/path.dart';
 import 'package:get/get.dart';
 
+import '../../../controller/myCartController.dart';
+
 class Checkout extends StatefulWidget {
   @override
   State<Checkout> createState() => _Checkout();
@@ -30,19 +32,19 @@ class CheckoutDetail {
   final String detail;
 }
 
-List<Product> listProduct = [
-  Product('Bell Pepper Red', '1kg, Price', '${Path.imagePath}bell-pepper.png',
-      '4.99'),
-  Product('Egg Chicken White', '4pcs, Price', '${Path.imagePath}egg-red.png',
-      '1.99'),
-  Product(
-      'Organic Bananas', '12kg, Price', '${Path.imagePath}banana.png', '3.00'),
-  Product('Ginger', '250gm, Price', '${Path.imagePath}onion.png', '2.99'),
-  Product('Mayonnais Eggless', '325ml, Price',
-      '${Path.imagePath}maiyonnais-eggless.png', '4.99'),
-  Product('Egg Noodles', '330ml, Price',
-      '${Path.imagePath}egg-noodles-purple.png', '4.99'),
-];
+// List<Product> listProduct = [
+//   Product('Bell Pepper Red', '1kg, Price', '${Path.imagePath}bell-pepper.png',
+//       '4.99'),
+//   Product('Egg Chicken White', '4pcs, Price', '${Path.imagePath}egg-red.png',
+//       '1.99'),
+//   Product(
+//       'Organic Bananas', '12kg, Price', '${Path.imagePath}banana.png', '3.00'),
+//   Product('Ginger', '250gm, Price', '${Path.imagePath}onion.png', '2.99'),
+//   Product('Mayonnais Eggless', '325ml, Price',
+//       '${Path.imagePath}maiyonnais-eggless.png', '4.99'),
+//   Product('Egg Noodles', '330ml, Price',
+//       '${Path.imagePath}egg-noodles-purple.png', '4.99'),
+// ];
 
 List<CheckoutDetail> listCheckoutDetail = [
   CheckoutDetail('Delivery', 'Select Method'),
@@ -52,6 +54,8 @@ List<CheckoutDetail> listCheckoutDetail = [
 ];
 
 class _Checkout extends State<Checkout> {
+  final c = Get.find<MyCartController>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,27 +81,29 @@ class _Checkout extends State<Checkout> {
           child: Column(children: [
             Expanded(
               child: Container(
-                height: 400,
-                width: double.infinity,
-                child: ListView.separated(
-                  itemCount: listProduct.length,
-                  itemBuilder: (context, index) {
-                    final product = listProduct[index];
-                    return MyCartProductBlock(
-                      url: product.url,
-                      name: product.name,
-                      description: product.description,
-                      price: product.price,
+                  height: Space.addProductToCartButtonWidth,
+                  width: double.infinity,
+                  child: Obx(() {
+                    return ListView.separated(
+                      itemCount: c.cartList.value.length,
+                      itemBuilder: (context, index) {
+                        final product = c.cartList.value[index];
+                        return MyCartProductBlock(
+                          index: index,
+                          url: product.url,
+                          name: product.name,
+                          description: product.description,
+                          price: product.price,
+                        );
+                      },
+                      separatorBuilder: (context, index) =>
+                          const SizedBox(height: Space.sizeBoxHeightMedium),
                     );
-                  },
-                  separatorBuilder: (context, index) =>
-                      const SizedBox(height: Space.sizeBoxHeightMedium),
-                ),
-              ),
+                  })),
             ),
             Container(
-              width: 364,
-              height: 67,
+              width: Space.confirmButtonWidth,
+              height: Space.confirmButtonHeight,
               child: TextButton(
                 onPressed: openBottomSheet,
                 style: ButtonStyle(
@@ -159,8 +165,15 @@ void openBottomSheet() {
                               style: AppStyles.checkoutDetailTypeTextStyle,
                             ),
                             Spacer(),
-                            Text(listCheckoutDetail[index].detail,
-                                style: AppStyles.checkoutDetailMethodTextStyle),
+                            listCheckoutDetail[index].detail != 'credit_card'
+                                ? Text(listCheckoutDetail[index].detail,
+                                    style:
+                                        AppStyles.checkoutDetailMethodTextStyle)
+                                : Image.asset(
+                                    '${Path.imagePath}arrow-right.png',
+                                    //height: Space.imageHeight,
+                                    width: Space.padding,
+                                  ),
                             Image.asset(
                               '${Path.imagePath}arrow-right.png',
                               //height: Space.imageHeight,
