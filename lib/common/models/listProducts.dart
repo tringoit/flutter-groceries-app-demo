@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:groceries_app/core/constants/path.dart';
 
 class Product {
-  const Product(
-      this.name, this.description, this.url, this.price, this.quantity);
+  Product(this.name, this.description, this.url, this.price, this.quantity);
 
   final String name;
   final String description;
   final String url;
   final String price;
-  final int quantity;
+  int quantity;
 }
 
 List<Product> listProduct = [

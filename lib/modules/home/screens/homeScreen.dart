@@ -116,8 +116,12 @@ class _HomeScreen extends State<HomeScreen> {
                           itemBuilder: (context, index) {
                             return ItemCart(
                               item: listProduct[index],
-                              onPressed: () =>
-                                  c.cartList.value.add(listProduct[index]),
+                              onPressed: () => c.checkExistProductCart(
+                                  listProduct[index].name,
+                                  listProduct[index].description,
+                                  listProduct[index].url,
+                                  listProduct[index].price,
+                                  listProduct[index].quantity),
                             );
                           },
                           separatorBuilder: (context, index) =>
@@ -250,7 +254,7 @@ class ItemCart extends StatelessWidget {
         name: item.name,
         description: item.description,
         price: item.price,
-        quantity: item.quantity + 1,
+        quantity: item.quantity,
         onPressed: () {
           //xu ly list
           onPressed?.call();

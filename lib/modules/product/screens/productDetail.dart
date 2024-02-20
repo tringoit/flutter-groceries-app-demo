@@ -92,32 +92,34 @@ class _ProductDetail extends State<ProductDetail> {
         padding: EdgeInsets.all(Space.padding),
         child: Column(children: [
           Container(
-              child: CarouselSlider(
-                  options: CarouselOptions(
-                    autoPlayInterval:
-                        const Duration(seconds: Time.imageSlideIntervalTime),
-                    autoPlayAnimationDuration: const Duration(
-                        milliseconds: Time.imageSlideAnimationDuration),
-                    autoPlayCurve: Curves.fastOutSlowIn,
-                    enlargeFactor: Space.homeScreenEnlargeFactor,
-                    scrollDirection: Axis.horizontal,
-                    autoPlay: true,
-                    aspectRatio: Space.homeScreenAspectRatio,
-                    enlargeCenterPage: true,
-                    onPageChanged: (index, reason) {
-                      setState(() {
-                        currentIndex = index;
-                      });
-                    },
-                  ),
-                  items: images
-                      .map((item) => Container(
-                            child: Image.asset(
-                              item,
-                              fit: BoxFit.fitWidth,
-                            ),
-                          ))
-                      .toList())),
+            child: CarouselSlider(
+              options: CarouselOptions(
+                autoPlayInterval:
+                    const Duration(seconds: Time.imageSlideIntervalTime),
+                autoPlayAnimationDuration: const Duration(
+                    milliseconds: Time.imageSlideAnimationDuration),
+                autoPlayCurve: Curves.fastOutSlowIn,
+                enlargeFactor: Space.homeScreenEnlargeFactor,
+                scrollDirection: Axis.horizontal,
+                autoPlay: true,
+                aspectRatio: Space.homeScreenAspectRatio,
+                enlargeCenterPage: true,
+                onPageChanged: (index, reason) {
+                  setState(() {
+                    currentIndex = index;
+                  });
+                },
+              ),
+              items: images
+                  .map((item) => Container(
+                        child: Image.asset(
+                          item,
+                          fit: BoxFit.fitWidth,
+                        ),
+                      ))
+                  .toList(),
+            ),
+          ),
           DotsIndicator(
             dotsCount: images.length,
             position: currentIndex.toDouble(),
@@ -222,12 +224,8 @@ class _ProductDetail extends State<ProductDetail> {
             width: Space.confirmButtonWidth,
             height: Space.confirmButtonHeight,
             child: ElevatedButton(
-                onPressed: () => c.cartList.value.add(Product(
-                    widget.name,
-                    widget.description,
-                    widget.url,
-                    widget.price,
-                    widget.quantity + 1)),
+                onPressed: () => c.checkExistProductCart(widget.name,
+                    widget.description, widget.url, widget.price, productCount),
                 style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(Colors.green),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
