@@ -9,6 +9,7 @@ class ProductBlock extends StatefulWidget {
   final String name;
   final String description;
   final String price;
+  final int quantity;
   final Function()? onPressed;
 
   const ProductBlock({
@@ -17,6 +18,7 @@ class ProductBlock extends StatefulWidget {
     required this.name,
     required this.description,
     required this.price,
+    required this.quantity,
     this.onPressed,
   });
 
@@ -31,10 +33,12 @@ class _ProductBlock extends State<ProductBlock> {
       // onTap: () => Get.toNamed(
       //     "/productDetail/${widget.name}/${widget.url}/${widget.description}"),
       onTap: () => Get.to(() => ProductDetail(
-          url: widget.url,
-          name: widget.name,
-          description: widget.description,
-          price: widget.price)),
+            url: widget.url,
+            name: widget.name,
+            description: widget.description,
+            price: widget.price,
+            quantity: widget.quantity,
+          )),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [

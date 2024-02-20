@@ -15,13 +15,15 @@ class ProductDetail extends StatefulWidget {
   final String name;
   final String description;
   final String price;
+  final int quantity;
 
   const ProductDetail(
       {super.key,
       required this.url,
       required this.name,
       required this.description,
-      required this.price});
+      required this.price,
+      required this.quantity});
 
   @override
   State<ProductDetail> createState() => _ProductDetail();
@@ -216,25 +218,27 @@ class _ProductDetail extends State<ProductDetail> {
             ),
           ]),
           Spacer(),
-          Obx(() {
-            return Container(
-              width: Space.confirmButtonWidth,
-              height: Space.confirmButtonHeight,
-              child: ElevatedButton(
-                  onPressed: () => c.cartList.value.add(Product(widget.name,
-                      widget.description, widget.url, widget.price)),
-                  style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.green),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(
-                                  Space.borderCircular)))),
-                  child: Text(
-                    'Add To Basket ${c.cartList.value.length}',
-                    style: AppStyles.myCartCheckoutButtonTextStyle,
-                  )),
-            );
-          })
+          Container(
+            width: Space.confirmButtonWidth,
+            height: Space.confirmButtonHeight,
+            child: ElevatedButton(
+                onPressed: () => c.cartList.value.add(Product(
+                    widget.name,
+                    widget.description,
+                    widget.url,
+                    widget.price,
+                    widget.quantity + 1)),
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(Colors.green),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.circular(Space.borderCircular)))),
+                child: const Text(
+                  'Add To Basket',
+                  style: AppStyles.myCartCheckoutButtonTextStyle,
+                )),
+          )
         ]),
       ),
     );

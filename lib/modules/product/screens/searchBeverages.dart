@@ -12,27 +12,29 @@ class SearchBeverages extends StatefulWidget {
 }
 
 class Product {
-  const Product(this.name, this.description, this.url, this.price);
+  const Product(
+      this.name, this.description, this.url, this.price, this.quantity);
 
   final String name;
   final String description;
   final String url;
   final String price;
+  final int quantity;
 }
 
 List<Product> listProduct = [
-  Product(
-      'Egg Chicken Red', '4pcs, Price', '${Path.imagePath}egg-red.png', '1.99'),
+  Product('Egg Chicken Red', '4pcs, Price', '${Path.imagePath}egg-red.png',
+      '1.99', 1),
   Product('Egg Chicken White', '180g, Price', '${Path.imagePath}egg-white.png',
-      '1.50'),
+      '1.50', 1),
   Product(
-      'Egg Pasta', '30gm, Price', '${Path.imagePath}egg-pasta.png', '15.99'),
-  Product(
-      'Egg Noodles', '2L, Price', '${Path.imagePath}egg-noodle.png', '15.99'),
+      'Egg Pasta', '30gm, Price', '${Path.imagePath}egg-pasta.png', '15.99', 1),
+  Product('Egg Noodles', '2L, Price', '${Path.imagePath}egg-noodle.png',
+      '15.99', 1),
   Product('Mayonnais Eggless', '325ml, Price',
-      '${Path.imagePath}maiyonnais-eggless.png', '4.99'),
+      '${Path.imagePath}maiyonnais-eggless.png', '4.99', 1),
   Product('Egg Noodles', '330ml, Price',
-      '${Path.imagePath}egg-noodles-purple.png', '4.99'),
+      '${Path.imagePath}egg-noodles-purple.png', '4.99', 1),
 ];
 
 class _SearchBeverages extends State<SearchBeverages> {
@@ -122,9 +124,11 @@ class ItemCart extends StatelessWidget {
                 width: Space.productBorderWidth),
             borderRadius: BorderRadius.circular(Space.borderCircular)),
         child: ProductBlock(
-            url: item.url,
-            name: item.name,
-            description: item.description,
-            price: '${item.price}'));
+          url: item.url,
+          name: item.name,
+          description: item.description,
+          price: '${item.price}',
+          quantity: item.quantity,
+        ));
   }
 }

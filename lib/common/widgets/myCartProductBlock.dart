@@ -13,14 +13,16 @@ class MyCartProductBlock extends StatefulWidget {
   final String name;
   final String description;
   final String price;
+  int quantity;
 
-  const MyCartProductBlock(
+  MyCartProductBlock(
       {super.key,
       required this.index,
       required this.url,
       required this.name,
       required this.description,
-      required this.price});
+      required this.price,
+      required this.quantity});
 
   @override
   State<MyCartProductBlock> createState() => _MyCartProductBlock();
@@ -28,6 +30,7 @@ class MyCartProductBlock extends StatefulWidget {
 
 class _MyCartProductBlock extends State<MyCartProductBlock> {
   final MyCartController c = Get.put(MyCartController());
+
   @override
   Widget build(BuildContext context) {
     return Column(children: [
@@ -48,8 +51,7 @@ class _MyCartProductBlock extends State<MyCartProductBlock> {
                   Container(
                     child: Text(
                       widget.name,
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 16),
+                      style: AppStyles.checkoutDetailMethodTextStyle,
                     ),
                   ),
                   InkWell(
@@ -57,8 +59,6 @@ class _MyCartProductBlock extends State<MyCartProductBlock> {
                       Icons.close,
                       color: Color(ListColor.closeSymbolButtonColor),
                     ),
-                    // onTap: () => c.cartList.value.remove(Product(widget.name,
-                    //     widget.description, widget.url, widget.price)),
                     onTap: () => c.cartList.value.removeAt(widget.index),
                   ),
                 ],
@@ -73,16 +73,66 @@ class _MyCartProductBlock extends State<MyCartProductBlock> {
               Row(
                 children: [
                   MinusButtonMyCart(),
+                  Obx(() {
+                    return Container(
+                        width: Space.productDetailAddItemInputWidth,
+                        child: Text(
+                          '${c.cartList.value[widget.index].quantity}',
+                          textAlign: AppStyles.productDetailAlignment,
+                          style: AppStyles.checkoutDetailMethodTextStyle,
+                        )
+                        //child: Text('${widget.quantity.toString()}')
+                        // TextFormField(
+                        //   initialValue: widget.quantity.toString(),
+                        //   textAlign: AppStyles.productDetailAlignment,
+                        //   decoration: const InputDecoration(
+                        //       enabledBorder: InputBorder.none),
+                        // ),
+                        );
+                  }),
+                  //PlusButtonMyCart(),
+
                   Container(
-                    width: Space.productDetailAddItemInputWidth,
-                    child: TextFormField(
-                      initialValue: '1',
-                      textAlign: AppStyles.productDetailAlignment,
-                      decoration: const InputDecoration(
-                          enabledBorder: InputBorder.none),
-                    ),
-                  ),
-                  PlusButtonMyCart(),
+                      height: Space.plusButtonSize,
+                      width: Space.plusButtonSize,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius:
+                              BorderRadius.circular(Space.borderCircular),
+                          border: Border.all(
+                              width: 1,
+                              color: const Color(
+                                  ListColor.myCartPlusButtonBorderColor))),
+                      child: InkWell(
+                        onTap: () {
+                          print(c.cartList.value[widget.index].quantity + 1);
+
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text('Alert Dialog Title'),
+                                content: Text(
+                                    '${c.cartList.value[widget.index].quantity}'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text('Close'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                        child: const Icon(
+                          Icons.add,
+                          color: Color(ListColor.checkoutButtonColor),
+                        ),
+                      )),
+
                   const Spacer(),
                   Container(
                       child: Text('\$${widget.price}',

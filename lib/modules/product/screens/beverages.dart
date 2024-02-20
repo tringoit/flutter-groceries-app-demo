@@ -105,6 +105,7 @@ class ItemCart extends StatelessWidget {
             name: item.name,
             description: item.description,
             price: '${item.price}',
+            quantity: item.quantity,
             onPressed: () {
               //xu ly list
               onPressed?.call();

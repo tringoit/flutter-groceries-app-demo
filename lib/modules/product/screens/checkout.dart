@@ -94,6 +94,7 @@ class _Checkout extends State<Checkout> {
                           name: product.name,
                           description: product.description,
                           price: product.price,
+                          quantity: product.quantity,
                         );
                       },
                       separatorBuilder: (context, index) =>
@@ -170,8 +171,7 @@ void openBottomSheet() {
                                     style:
                                         AppStyles.checkoutDetailMethodTextStyle)
                                 : Image.asset(
-                                    '${Path.imagePath}arrow-right.png',
-                                    //height: Space.imageHeight,
+                                    '${Path.imagePath}credit_card.png',
                                     width: Space.padding,
                                   ),
                             Image.asset(
