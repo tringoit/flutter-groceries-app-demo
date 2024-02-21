@@ -158,8 +158,13 @@ class _HomeScreen extends State<HomeScreen> {
                             itemBuilder: (context, index) {
                               return ItemCart(
                                 item: bestSelling[index],
-                                onPressed: () =>
-                                    c.cartList.value.add(bestSelling[index]),
+                                onPressed: () => c.checkExistProductCart(
+                                  bestSelling[index].name,
+                                  bestSelling[index].description,
+                                  bestSelling[index].url,
+                                  bestSelling[index].price,
+                                  bestSelling[index].quantity,
+                                ),
                               );
                             },
                             separatorBuilder: (context, index) =>
@@ -214,8 +219,13 @@ class _HomeScreen extends State<HomeScreen> {
                             itemBuilder: (context, index) {
                               return ItemCart(
                                 item: listGroceries[index],
-                                onPressed: () =>
-                                    c.cartList.value.add(listGroceries[index]),
+                                onPressed: () => c.checkExistProductCart(
+                                  listGroceries[index].name,
+                                  listGroceries[index].description,
+                                  listGroceries[index].url,
+                                  listGroceries[index].price,
+                                  listGroceries[index].quantity,
+                                ),
                               );
                             },
                             separatorBuilder: (context, index) =>

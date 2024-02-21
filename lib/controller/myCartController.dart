@@ -2,6 +2,8 @@ import 'package:get/get.dart';
 import '../common/models/listProducts.dart';
 import '../core/constants/path.dart';
 
+const int notExistProductIndex = -1;
+
 class MyCartController extends GetxController {
   late final Rx<List<Product>> productList;
   late final Rx<List<Product>> bestSellingList;
@@ -31,13 +33,13 @@ class MyCartController extends GetxController {
   }
 
   checkExistProductCart(name, description, url, price, int quantity) {
-    int index = -1;
+    int index = notExistProductIndex;
     cartList.value.asMap().forEach((key, product) {
       if (product.name == name) {
         index = key;
       }
     });
-    if (index != -1) {
+    if (index != notExistProductIndex) {
       //Lấy số lượng hiện tại
       int currentQuantity = cartList.value[index].quantity;
       //Cộng sản phẩm khi ấn nút thêm
